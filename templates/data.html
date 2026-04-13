@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Data</title>
+</head>
+<body>
+
+<h2>Student Data</h2>
+
+
+
+<table border="1">
+    <tr>
+        <th>id</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Email</th>
+        <th>Action</th>
+    </tr>
+
+    {% for row in data %}
+    <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1]|capitalize }}</td>
+        <td>{{ row[2] }}</td>
+        <td>{{ row[3]}}</td>
+        
+
+    <td>  <a href="/edit/{{ row[0] }}">✏️</a>
+            <a href="/delete/{{ row[0] }}">🗑️</a>
+
+    </td>
+
+    </tr>
+    {% endfor %}
+    <br><br>
+<a href="/">⬅ Go Back to Form</a>
+
+</table>
+
+
+
+
+
+</body>
+</html>
