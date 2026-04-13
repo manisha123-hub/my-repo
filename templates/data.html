@@ -23,18 +23,17 @@
         <td>{{ row[0] }}</td>
         <td>{{ row[1]|capitalize }}</td>
         <td>{{ row[2] }}</td>
-        <td>{{ row[3]}}</td>
+        <td>{{ row[3]|capitalize }}</td>
         
 
     <td>  <a href="/edit/{{ row[0] }}">✏️</a>
-            <a href="/delete/{{ row[0] }}">🗑️</a>
-
+    <a href="/delete/{{ row[0] }}">🗑️</a>
     </td>
 
     </tr>
     {% endfor %}
     <br><br>
-<a href="/">⬅ Go Back to Form</a>
+<a href="/">⬅ return to form</a>
 
 </table>
 
