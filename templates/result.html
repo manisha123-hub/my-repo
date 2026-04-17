@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All users data</title>
+</head>
+<body>
+<table border="1">
+     <tr>
+        <th>name</th>
+         <th>age</th>
+         <th>roll</th>
+         <th>email</th>
+    </tr>
+
+{% for user in users %}      <!--users meinuser loop kro-->
+<tr>
+    <td>{{user.name}}</td>
+    <td>{{user.age}}</td>
+    <td>{{user.roll}}</td>
+    <td>{{user.email}}</td>
+</tr>    
+{% endfor %}                   <!-- loop end --> 
+</table>
+
+
+<a href="/">⬅ Go Back</a>
+    
+</body>
+</html>
