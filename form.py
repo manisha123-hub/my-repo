@@ -19,18 +19,7 @@ def home():
     return render_template("form.html")
 
 
-# Insert data
-@app.route("/submit", methods=["POST"])
-def submit():
-    name = request.form["name"].title()
-    age = request.form["age"]
-    email = request.form["email"]
 
-    query = "INSERT INTO users(name, age, email) VALUES (%s, %s, %s)"
-    cursor.execute(query, (name, age, email))
-    conn.commit()
-
-    return redirect("/data")
 
 
 # Show all data
