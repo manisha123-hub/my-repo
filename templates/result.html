@@ -8,18 +8,18 @@
 <body>
 <table border="1">
      <tr>
+        <th>id</th>
         <th>name</th>
-         <th>age</th>
-         <th>roll</th>
-         <th>email</th>
+        <th>age</th>
+        <th>email</th>
     </tr>
 
-{% for user in users %}      <!--users meinuser loop kro-->
+{% for row in users %}      <!--users meinuser loop kro-->
 <tr>
-    <td>{{user.name}}</td>
-    <td>{{user.age}}</td>
-    <td>{{user.roll}}</td>
-    <td>{{user.email}}</td>
+    <td>{{row[0]}}</td>
+    <td>{{row[1]}}</td>
+    <td>{{row[2]}}</td>
+    <td>{{row[3]}}</td>
 </tr>    
 {% endfor %}                   <!-- loop end --> 
 </table>

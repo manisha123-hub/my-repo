@@ -1,33 +1,97 @@
-from flask import Flask,request,render_template,redirect,url_for
-app = Flask(__name__)
-users=[]
+from flask import Flask, request, render_template, redirect, url_for
+import mysql.connector
 
+app = Flask(__name__)
+
+# MySQL connection
+conn = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="negi123",
+    database="student_details",
+    port=3306
+)
+
+cursor = conn.cursor()
+
+cursor.execute("SELECT DATABASE()")
+print("CURRENT DB:", cursor.fetchone())
+
+cursor.execute("SELECT @@hostname")
+print("MYSQL HOST:", cursor.fetchone())
+
+# Home
 @app.route('/')
 def home():
     return render_template("do.html")
 
-@app.route("/add",methods=["POST"])
+#  Add Data
+@app.route('/add', methods=['POST'])
 def add():
-    name=request.form["name"]
-    age=request.form["age"]
-    roll=request.form["roll_no"]
-    email=request.form["email"]
-    
-    user = {
-        "name":name,
-        "age":age,
-        "roll":roll,
-        "email":email
-        }
-    users.append(user)
-    return redirect(url_for('show'))    #move to next page which is /show
+    id = request.form["id"]
+    name = request.form["name"]
+    age = request.form["age"]
+    email = request.form["email"]
 
-@app.route("/show")     
+    cursor.execute(
+        "INSERT INTO users (id, name, age, email) VALUES (%s, %s, %s, %s)",
+        (id, name, age, email)
+    )
+    conn.commit()
+
+    return redirect(url_for('show'))
+
+#  Show Data
+@app.route('/show')
 def show():
-     return render_template("result.html", users=users)  #show ke liye file result>html hai
+    conn = get_connection()
+    cursor = conn.cursor()
 
+    cursor.execute("SELECT * FROM users")
+    data = cursor.fetchall()
 
-    
-if __name__=="__main__":
-        app.run, debug=True   # app run krao agr vo main hai to
+    cursor.close()
+    conn.close()
 
+    print("DATA FROM DB:", data)
+    return render_template("result.html", users=data)
+
+#  Delete
+@app.route('/delete/<int:id>')
+def delete(id):
+    cursor.execute("DELETE FROM users WHERE id=%s", (id,))
+    conn.commit()
+    return redirect(url_for('show'))
+
+#  Edit
+@app.route('/edit/<int:id>')
+def edit(id):
+    cursor.execute("SELECT * FROM users WHERE id=%s", (id,))
+    user = cursor.fetchone()
+    return render_template("edit.html", user=user)
+
+# Update
+@app.route('/update/<int:id>', methods=['POST'])
+def update(id):
+    name = request.form['name']
+    age = request.form['age']
+    email = request.form['email']
+
+    cursor.execute(
+        "UPDATE users SET name=%s, age=%s, email=%s WHERE id=%s",
+        (name, age, email, id)
+    )
+    conn.commit()
+
+    return redirect(url_for('show'))
+
+def get_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="negi123",
+        database="student_details"
+    )
+
+if __name__ == "__main__":
+    app.run(debug=True)
